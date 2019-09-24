@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-09-24T06:44:50.503Z</updated>
+    <updated>2019-09-24T07:08:33.151Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -11,12 +11,92 @@
     <icon>https://rainyclementine.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Siilhouette</rights>
     <entry>
-        <title type="html"><![CDATA[d]]></title>
-        <id>https://rainyclementine.github.io/post/d</id>
-        <link href="https://rainyclementine.github.io/post/d">
+        <title type="html"><![CDATA[POI2014 Hotels 长链剖分优化树形DP]]></title>
+        <id>https://rainyclementine.github.io/post/poi2014-hotels-chang-lian-pou-fen-you-hua-shu-xing-dp</id>
+        <link href="https://rainyclementine.github.io/post/poi2014-hotels-chang-lian-pou-fen-you-hua-shu-xing-dp">
         </link>
-        <updated>2019-09-24T06:44:42.000Z</updated>
-        <content type="html"><![CDATA[<p>d</p>
+        <updated>2019-09-24T06:57:19.000Z</updated>
+        <content type="html"><![CDATA[<p>给定一棵树 每条边的长度相同 任意两个节点可以相互到达<br>
+选3个点 两两距离相等 有多少种方案</p>
+<p>f[x][i]表示x子树中距离x为i距离的点数<br>
+g[x][i]表示x子树中到lca距离都是d lca到x距离是d-i的点对数量<br>
+ans+=f[x][j-1]*g[y][j]<br>
+ans+=g[x][j+1]*f[y][j]<br>
+g[x][j+1]+=f[x][j+1]*f[y][j]<br>
+g[x][j-1]+=g[y][j]<br>
+f[x][j+1]+=f[y][j]<br>
+*f[i] *g[i]共同使用tem内存池 所以tem要开两倍<br>
+内存池id指针移动时要移动两倍距离</p>
+<pre><code>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N=100010;
+typedef long long ll;
+int n,tot,head[N],d[N],son[N];
+ll tem[N&lt;&lt;1],*f[N],*g[N],*id=tem,ans;
+struct Edge{
+	int ver,suiv;
+}e[N&lt;&lt;1];
+
+inline void lnk(int x,int y)
+{
+	e[++tot].ver=y;
+	e[tot].suiv=head[x];
+	head[x]=tot;
+}
+
+inline void dfs1(int x,int fa)
+{
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(y==fa)continue;
+		dfs1(y,x);
+		if(d[y]&gt;d[son[x]])son[x]=y;
+	}
+	d[x]=d[son[x]]+1;
+}
+
+inline void dfs2(int x,int fa)
+{
+	if(son[x])
+		f[son[x]]=f[x]+1,g[son[x]]=g[x]-1,dfs2(son[x],x);
+	f[x][0]=1,ans+=g[x][0];
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(y==fa || y==son[x])continue;
+		f[y]=id,id+=d[y]&lt;&lt;1;
+		g[y]=id,id+=d[y]&lt;&lt;1;
+		dfs2(y,x);
+		for(int j=0;j&lt;d[y];j++)
+		{
+			if(j)ans+=f[x][j-1]*g[y][j];
+			ans+=g[x][j+1]*f[y][j];
+		}
+		for(int j=0;j&lt;d[y];j++)
+		{			
+			g[x][j+1]+=f[x][j+1]*f[y][j];
+			if(j)g[x][j-1]+=g[y][j];
+			f[x][j+1]+=f[y][j];
+		}
+	}
+}
+
+int main()
+{
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1,x,y;i&lt;n;i++)
+		scanf(&quot;%d%d&quot;,&amp;x,&amp;y),
+		lnk(x,y),lnk(y,x);
+	dfs1(1,0);
+	f[1]=id,id+=d[1]&lt;&lt;1;
+	g[1]=id,id+=d[1]&lt;&lt;1;
+	dfs2(1,0);
+	printf(&quot;%lld\n&quot;,ans);
+	return 0;
+} 
+</code></pre>
 ]]></content>
     </entry>
 </feed>
