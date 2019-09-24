@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-09-24T08:48:50.537Z</updated>
+    <updated>2019-09-24T09:37:02.371Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -10,6 +10,94 @@
     <logo>https://rainyclementine.github.io/images/avatar.png</logo>
     <icon>https://rainyclementine.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Siilhouette</rights>
+    <entry>
+        <title type="html"><![CDATA[POJ3585 AccumulationDegree 换根DP]]></title>
+        <id>https://rainyclementine.github.io/post/poj3585-accumulationdegree-huan-gen-dp</id>
+        <link href="https://rainyclementine.github.io/post/poj3585-accumulationdegree-huan-gen-dp">
+        </link>
+        <updated>2019-09-24T09:34:51.000Z</updated>
+        <content type="html"><![CDATA[<p>给定一棵树 每条边有流量限制w(x,y) 每个叶子都是汇点<br>
+求以哪个店为源点时 流量最大</p>
+<p>先求出以1为根时的每个点的流量d[i]<br>
+d[x]=sigma{min(d[y],w(x,y))}<br>
+当y是叶子时 d[x]=w(x,y)<br>
+f[x]表示以x为根时的流量<br>
+f[1]=d[1]<br>
+f[y]=d[y]+min(f[x]-min(d[y],z),z)</p>
+<p>f[x]-min(d[y],z)是除了y子树 其他点到x的流量<br>
+当x是叶子时<br>
+f[y]=d[y]+w(x,y)</p>
+<pre><code>#include&lt;algorithm&gt;
+#include&lt;cstring&gt;
+#include&lt;cstdio&gt;
+using namespace std;
+
+const int N=300010;
+int n,m,tot,head[N],ind[N],d[N],f[N];
+struct Edge{
+	int ver,suiv,edge;
+}e[N&lt;&lt;1];
+
+inline void lnk(int x,int y,int z)
+{
+	e[++tot].ver=y;
+	e[tot].edge=z;
+	e[tot].suiv=head[x];
+	head[x]=tot;
+}
+
+inline void dfs1(int x,int fa)
+{
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver,z=e[i].edge;
+		if(y==fa)continue;
+		dfs1(y,x);
+		d[x]+=min(d[y],z);
+		if(ind[y]==1)d[x]+=z;
+	}
+}
+
+inline void dfs2(int x,int fa)
+{
+	if(x==1)f[x]=d[x];
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver,z=e[i].edge;
+		if(y==fa)continue;
+		if(ind[x]==1)f[y]=d[y]+z;
+		else f[y]=d[y]+min(f[x]-min(d[y],z),z);
+		dfs2(y,x);
+	}
+}
+
+int main()
+{
+	int T;
+	scanf(&quot;%d&quot;,&amp;T);
+	while(T--)
+	{
+		tot=0;
+		memset(f,0,sizeof(f));
+		memset(d,0,sizeof(d));
+		memset(ind,0,sizeof(ind));
+		memset(head,0,sizeof(head));
+		scanf(&quot;%d&quot;,&amp;n);
+		for(int i=1,x,y,z;i&lt;n;i++)
+			scanf(&quot;%d%d%d&quot;,&amp;x,&amp;y,&amp;z),
+			lnk(x,y,z),lnk(y,x,z),ind[x]++,ind[y]++;
+		dfs1(1,0);
+		dfs2(1,0);
+		int ans=0;
+		for(int i=1;i&lt;=n;i++)
+			ans=max(ans,f[i]);
+		printf(&quot;%d\n&quot;,ans);
+	}
+	return 0;
+} 
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[POI2014 Hotels 长链剖分优化树形DP]]></title>
         <id>https://rainyclementine.github.io/post/poi2014-hotels-chang-lian-pou-fen-you-hua-shu-xing-dp</id>
