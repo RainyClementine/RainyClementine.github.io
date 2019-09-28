@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-09-28T12:54:37.859Z</updated>
+    <updated>2019-09-28T12:56:27.184Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -33,10 +33,10 @@ const int N=14;
 int n,mod,p,q,r,t,u,v,w,x,y,z;
 const int _b[N][N]={
 //   0 1 2 3 4 5 6 7 8 9 0 1 2 3 
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //0
-    {0,p,1,1,0,1,0,0,0,0,0,0,0,0}, //1
-    {0,q,0,0,0,0,0,0,0,0,0,0,0,0}, //2
-    {0,1,0,u,1,1,0,0,0,0,0,0,0,0}, //3
+	{0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //0
+	{0,p,1,1,0,1,0,0,0,0,0,0,0,0}, //1
+	{0,q,0,0,0,0,0,0,0,0,0,0,0,0}, //2
+	{0,1,0,u,1,1,0,0,0,0,0,0,0,0}, //3
 	{0,0,0,v,0,0,0,0,0,0,0,0,0,0}, //4
 	{0,1,0,1,0,x,1,0,0,0,0,0,0,0}, //5
 	{0,0,0,0,0,y,0,0,0,0,0,0,0,0}, //6
