@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-09-28T12:54:19.720Z</updated>
+    <updated>2019-09-28T12:54:34.395Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -11,7 +11,7 @@
     <icon>https://rainyclementine.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Siilhouette</rights>
     <entry>
-        <title type="html"><![CDATA[P1707刷题比赛 矩阵乘法]]></title>
+        <title type="html"><![CDATA[P1707 刷题比赛 矩阵乘法]]></title>
         <id>https://rainyclementine.github.io/post/p1707-shua-ti-bi-sai-ju-zhen-cheng-fa</id>
         <link href="https://rainyclementine.github.io/post/p1707-shua-ti-bi-sai-ju-zhen-cheng-fa">
         </link>
