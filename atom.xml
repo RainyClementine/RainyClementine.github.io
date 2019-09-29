@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-09-28T12:56:27.184Z</updated>
+    <updated>2019-09-29T06:46:25.222Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -10,6 +10,130 @@
     <logo>https://rainyclementine.github.io/images/avatar.png</logo>
     <icon>https://rainyclementine.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Siilhouette</rights>
+    <entry>
+        <title type="html"><![CDATA[SCOI2013 摩托车交易 最大生成树 倍增]]></title>
+        <id>https://rainyclementine.github.io/post/scoi2013-mo-tuo-che-jiao-yi-zui-da-sheng-cheng-shu-bei-zeng</id>
+        <link href="https://rainyclementine.github.io/post/scoi2013-mo-tuo-che-jiao-yi-zui-da-sheng-cheng-shu-bei-zeng">
+        </link>
+        <updated>2019-09-29T06:43:53.000Z</updated>
+        <content type="html"><![CDATA[<p>一张图 每条边的载重是边权<br>
+有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span></span></span></span>个传送点 传送点之间可以传送 没有限重<br>
+有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>个订单 分布在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>个点上<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span>为正表示这个点上的人最多卖出<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span> 为负表示最多这个点上的人最多买入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mi>d</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">id[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span>表示第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span>个交易是那个点上<br>
+要求  必须按顺序交易 不能扔掉货物<br>
+且 与最后一个客户完成交易后没有剩余货物<br>
+对于每一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span>为负的交易 输出卖出的货物数</p>
+<p>从第一个传送点向其他传送点连inf的边<br>
+跑出最大生成树 倍增预处理路径的最小边权<br>
+每次卖出的货物的数目就是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo></mrow><annotation encoding="application/x-tex">min(</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span></span></span></span>上一次存货,路径最小值,需求<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>)</mo></mrow><annotation encoding="application/x-tex">)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mo>[</mo><mi>i</mi><mi>d</mi><mo>[</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo>]</mo><mo>]</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c[id[i+1]]&gt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>时 存货<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo></mrow><annotation encoding="application/x-tex">=min(</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span></span></span></span>存货,路径最小值<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>)</mo><mo>+</mo><mi>c</mi><mo>[</mo><mi>i</mi><mi>d</mi><mo>[</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo>]</mo><mo>]</mo></mrow><annotation encoding="application/x-tex">)+c[id[i+1]]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span><span class="mclose">]</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mo>[</mo><mi>i</mi><mi>d</mi><mo>[</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo>]</mo><mo>]</mo><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c[id[i+1]]&lt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>时 存货<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo>(</mo><mn>0</mn><mo separator="true">,</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo></mrow><annotation encoding="application/x-tex">=max(0,min(</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span></span></span></span>存货,路径最小值<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>)</mo><mo>+</mo><mi>c</mi><mo>[</mo><mi>i</mi><mi>d</mi><mo>[</mo><mi>i</mi><mo>+</mo><mn>1</mn><mo>]</mo><mo>]</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">)+c[id[i+1]])</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">c</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">]</span><span class="mclose">]</span><span class="mclose">)</span></span></span></span></p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N=100010;
+const int M=300010;
+typedef long long ll;
+int n,m,q,tot,cnt,head[N],id[N],train[N],fa[N],f[N][26],d[N];
+ll c[N],w[N][26];
+struct Node{
+	int x,y;
+	ll z;
+	Node(){}
+	Node(int _x,int _y,ll _z):x(_x),y(_y),z(_z){}
+	inline bool operator &lt;(const Node&amp; that)const{
+		return z&gt;that.z;
+	} 
+}a[M];
+
+struct Edge{
+	int suiv,ver;
+	ll edge;
+}e[M&lt;&lt;1];
+
+inline int find(int x){return x==fa[x]?x:fa[x]=find(fa[x]);}
+inline void lnk(int x,int y,ll z)
+{
+	e[++tot].ver=y;
+	e[tot].edge=z;
+	e[tot].suiv=head[x];
+	head[x]=tot;
+}
+
+inline void dfs(int x)
+{
+	d[x]=d[f[x][0]]+1;
+	for(int i=1;1&lt;&lt;i&lt;=d[x];i++)
+		f[x][i]=f[f[x][i-1]][i-1],
+		w[x][i]=min(w[x][i-1],w[f[x][i-1]][i-1]);
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		ll z=e[i].edge;
+		if(y==f[x][0])continue;
+		f[y][0]=x;
+		w[y][0]=z;
+		dfs(y);
+	}
+}
+
+inline ll lca(int x,int y)
+{
+	ll res=1ll&lt;&lt;60;
+	if(d[x]&lt;d[y])swap(x,y);
+	for(int i=25;~i;i--)
+		if(d[f[x][i]]&gt;=d[y])
+			res=min(res,w[x][i]),x=f[x][i];
+	if(x==y)return res;
+	for(int i=25;~i;i--)
+		if(f[x][i]!=f[y][i])
+			res=min(res,min(w[x][i],w[y][i])),
+			x=f[x][i],y=f[y][i];
+	return min(res,min(w[x][0],w[y][0]));
+}
+
+int main()
+{
+	scanf(&quot;%d%d%d&quot;,&amp;n,&amp;m,&amp;q);
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%d&quot;,&amp;id[i]),fa[i]=i;
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%lld&quot;,&amp;c[i]);
+	for(int i=1;i&lt;=m;i++)
+		scanf(&quot;%d%d%lld&quot;,&amp;a[i].x,&amp;a[i].y,&amp;a[i].z);
+	for(int i=1;i&lt;=q;i++)
+		scanf(&quot;%d&quot;,&amp;train[i]);
+	cnt=m;
+	for(int i=2;i&lt;=q;i++)
+		a[++cnt]=Node(train[1],train[i],1ll&lt;&lt;60);
+	sort(a+1,a+1+cnt);
+	for(int i=1;i&lt;=cnt;i++)
+	{
+		int fx=find(a[i].x),fy=find(a[i].y);
+		if(fx==fy)continue;
+		fa[fx]=fy;
+		lnk(a[i].x,a[i].y,a[i].z);
+		lnk(a[i].y,a[i].x,a[i].z);
+	}
+	dfs(1);
+	ll pos=0;
+	if(c[id[1]]&gt;0)pos=c[id[1]];
+	else puts(&quot;0&quot;);
+	for(int i=1;i&lt;n;i++)
+	{
+		ll maxi=lca(id[i],id[i+1]);
+		pos=min(pos,maxi);
+		if(c[id[i+1]]&gt;0)
+			pos+=c[id[i+1]];
+		else printf(&quot;%lld\n&quot;,min(pos,-c[id[i+1]])),
+			pos=max(0ll,pos+c[id[i+1]]);
+	}
+	return 0;
+} 
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[P1707 刷题比赛 矩阵乘法]]></title>
         <id>https://rainyclementine.github.io/post/p1707-shua-ti-bi-sai-ju-zhen-cheng-fa</id>
