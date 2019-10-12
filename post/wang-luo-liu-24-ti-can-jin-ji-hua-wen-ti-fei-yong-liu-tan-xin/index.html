@@ -1,0 +1,616 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
+<meta HTTP-EQUIV="expires" CONTENT="0"> 
+<title>网络流24题 餐巾计划问题 费用流 贪心 | Siilhouette</title>	
+
+<link rel="stylesheet" href="https://rainyclementine.github.io/styles/main.css">
+<script type="text/javascript">
+function getCSS()
+{
+        datetoday = new Date();
+        timenow=datetoday.getTime();
+        datetoday.setTime(timenow);
+        thehour = datetoday.getHours();
+
+            display = "https://rainyclementine.github.io/media/css/night.css";
+
+            display = "https://rainyclementine.github.io/media/css/night.css";   
+      
+            display = "https://rainyclementine.github.io/media/css/day.css";
+
+            display = "https://rainyclementine.github.io/media/css/day.css";
+      
+
+var css = '<';
+        css+='link rel="stylesheet" href='+display+' \/';
+        css+='>';
+        document.write(css);
+}
+</script>
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script|Noto+Sans+SC:300|Montserrat&display=swap" rel="stylesheet">
+<link href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css" rel="stylesheet" />
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<script type='text/javascript' src='https://rainyclementine.github.io/media/scripts/script.js'></script>
+<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet" />
+  <script src="https://cdn.bootcss.com/wow/1.1.2/wow.min.js"></script>
+  <script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script>wow=new WOW({boxClass:'wow',animateClass:'animated',offset:0,mobile:true,live:true});wow.init();</script>
+
+<script type="text/javascript">
+window.onload=getCSS();
+</script>
+
+
+ 	
+</head>
+<body class="post-template-default single single-post postid-70 single-format-standard">
+    <div id="wrapper">
+        
+			
+		<header id="header" class="site-header" 
+		
+		>
+			<div class="site-branding">
+									<h1 class="site-title"><a href="https://rainyclementine.github.io" rel="home">Siilhouette</a></h1>
+										
+					<h2 class="site-description">Rearrange the stars</h2>
+										
+							</div>
+			<nav id="nav-wrapper">
+				<div class="container">
+					<div class="nav-toggle">
+						<div class="bars">
+							<div class="bar"></div>
+							<div class="bar"></div>
+							<div class="bar"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<ul id="" class="dove">
+		 
+     			
+<li>
+	 
+	<a  href="/"> 首页</a></li>
+	
+    
+     			
+<li>
+	 
+	<a  href="/archives"> 归档</a></li>
+	
+    
+     			
+<li>
+	 
+	<a  href="/tags"> 标签</a></li>
+	
+    
+     			
+<li>
+	 
+	<a  href="/post/about"> 关于</a></li>
+	
+    
+
+</ul>
+</li>		
+		
+</ul>				</div>
+			</nav>
+						<div class="jingge">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        </header>
+
+		<div id="content" class="container">
+			<div class="row">
+	<div class="col-md-8 site-main">
+				
+<article id="post-70" class="post-70 post type-post status-publish format-standard hentry category-5 tag-10 tag-9 tag-11">
+
+	
+	                      
+		<div class="entry-content">
+			<h1 class="wow swing entry-title">网络流24题 餐巾计划问题 费用流 贪心</h1>
+<div class="entry-meta">
+<div class="wow bounce">
+	<i class="iconfont icon-rili"> <time class="lately-a" datetime="2019-10-12 17:24:13" itemprop="datePublished" pubdate="">2019-10-12</time></i>
+	          </div>
+			
+</span>
+													 
+		</div>
+                  
+			<div class="wow slideInLeft entry-summary song">
+				<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>H</mi><mi>N</mi><mi>O</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">HNOI</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span></span></span></span>软件开发/餐巾计划问题<br>
+每个开发人员每天需要一块消毒毛巾 这种消毒毛巾使用一天后<br>
+必须再做消毒处理后才能使用 消毒方式有两种<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span></span></span></span>种方式的消毒需要a天时间 B种方式的消毒需要<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span></span></span></span>天（<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi><mo>&gt;</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">b&gt;a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.73354em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span>）<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">A</span></span></span></span>种消毒方式的费用为每块毛巾<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>A</mi></mrow><annotation encoding="application/x-tex">fA</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">A</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span>种消毒方式的费用为每块毛巾<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">fB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span> 而买一块新毛巾的费用为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span><br>
+新毛巾是已消毒的 当天可以使用 而且<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>&gt;</mo><mi>f</mi><mi>A</mi><mo>&gt;</mo><mi>f</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">f&gt;fA&gt;fB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">A</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span></span></span></span><br>
+第<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span>天有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span>个开发人员 求最小花费</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>H</mi><mi>N</mi><mi>O</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">HNOI</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.08125em;">H</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord mathdefault" style="margin-right:0.07847em;">I</span></span></span></span>软件开发同网络流<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>24</mn></mrow><annotation encoding="application/x-tex">24</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">4</span></span></span></span>题餐巾计划问题 就是要<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>天洗好<br>
+而餐巾计划<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span>天洗好<br>
+这两道题数据范围小 可以费用流求解<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi><mo>−</mo><mo>&gt;</mo><mi>x</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">S-&gt;xi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span></span></span></span> 容量为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span>费用为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mi>i</mi><mo>−</mo><mo>&gt;</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">yi-&gt;T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">i</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span></span></span></span> 容量为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span>费用为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>S</mi><mo>−</mo><mo>&gt;</mo><mi>y</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">S-&gt;yi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">i</span></span></span></span> 容量为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi><mi>i</mi><mi>n</mi><mi>f</mi></mrow><annotation encoding="application/x-tex">ci inf</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>也一样 费用为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi>i</mi><mo>−</mo><mo>&gt;</mo><mi>x</mi><mi>i</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">xi-&gt;xi+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 容量为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mi>n</mi><mi>f</mi></mrow><annotation encoding="application/x-tex">inf</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>费用为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi>i</mi><mo>−</mo><mo>&gt;</mo><mi>y</mi><mi>i</mi><mo>+</mo><mi>a</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">xi-&gt;yi+a+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">a</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 容量为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mi>n</mi><mi>f</mi></mrow><annotation encoding="application/x-tex">inf</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>费用为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">fa</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">a</span></span></span></span><br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi>i</mi><mo>−</mo><mo>&gt;</mo><mi>y</mi><mi>i</mi><mo>+</mo><mi>b</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">xi-&gt;yi+b+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span><span class="mord">−</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">b</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 容量为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mi>n</mi><mi>f</mi></mrow><annotation encoding="application/x-tex">inf</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span></span></span></span>费用为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">fb</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">b</span></span></span></span><br>
+将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">xi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span></span></span></span>看作脏毛巾 将<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">yi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">i</span></span></span></span>看作干净的毛巾 每天买毛巾的价格相同<br>
+所以一定是洗完或买完毛巾就立刻使用 所以<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">yi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">i</span></span></span></span>直接向<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span></span></span></span>连边<br>
+每天能够得到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>c</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">ci</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">c</span><span class="mord mathdefault">i</span></span></span></span>条脏毛巾 这些脏毛巾不一定立刻送洗<br>
+所以<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">xi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span></span></span></span>想<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mi>i</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">xi+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathdefault">x</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>连边 表示留到下一天</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N=2010;
+const int M=8010;
+const int inf=0x7fffffff;
+int n,tot=1,st,ed,head[N],flow[N],d[N],pre[N],idx[N];
+int a,b,f,fa,fb,c[N];
+bool v[N];
+struct Edge{
+	int ver,suiv,edge,cos;
+}e[M&lt;&lt;1];
+
+inline void lnk(int x,int y,int z,int w)
+{
+	e[++tot].ver=y;
+	e[tot].edge=z;
+	e[tot].cos=w;
+	e[tot].suiv=head[x];
+	head[x]=tot;
+}
+
+inline bool spfa()
+{
+	queue&lt;int&gt;q;
+	memset(flow,0x3f,sizeof(flow));
+	memset(d,0x3f,sizeof(d));
+	memset(v,0,sizeof(v));
+	d[st]=0;
+	q.push(st);
+	pre[ed]=-1;
+	while(q.size())
+	{
+		int x=q.front();
+		q.pop();
+		v[x]=0;
+		for(int i=head[x];i;i=e[i].suiv)
+		{
+			int y=e[i].ver,w=e[i].cos,z=e[i].edge;
+			if(!z || d[y]&lt;=d[x]+w)continue;
+			d[y]=d[x]+w;
+			pre[y]=x;
+			idx[y]=i;
+			flow[y]=min(flow[x],z);
+			if(!v[y])q.push(y),v[y]=1;
+		}
+	}
+	return ~pre[ed];
+}
+
+inline int mcmf()
+{
+	int res=0;
+	while(spfa())
+	{
+		int pos=ed;
+		res+=d[ed]*flow[ed];
+		while(pos!=st)
+		{
+			e[idx[pos]].edge-=flow[ed];
+			e[idx[pos]^1].edge+=flow[ed];
+			pos=pre[pos];
+		}
+	}
+	return res;
+}
+
+int main()
+{
+	scanf(&quot;%d%d%d%d%d%d&quot;,&amp;n,&amp;a,&amp;b,&amp;f,&amp;fa,&amp;fb);
+	st=0,ed=n&lt;&lt;1|1;
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%d&quot;,&amp;c[i]);
+	for(int i=1;i&lt;=n;i++)
+		lnk(st,i,c[i],0),lnk(i,st,0,0),
+		lnk(st,i+n,inf,f),lnk(i+n,st,0,-f),
+		lnk(i+n,ed,c[i],0),lnk(ed,i+n,0,0);
+	for(int i=1;i+a+1&lt;=n;i++)
+		lnk(i,i+a+1+n,inf,fa),lnk(i+a+1+n,i,0,-fa);
+	for(int i=1;i+b+1&lt;=n;i++)
+		lnk(i,i+b+1+n,inf,fb),lnk(i+b+1+n,i,0,-fb);
+	for(int i=1;i&lt;n;i++)
+		lnk(i,i+1,inf,0),lnk(i+1,i,0,0);
+	printf(&quot;%d\n&quot;,mcmf());
+	return 0;
+}
+</code></pre>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>B</mi><mi>J</mi><mi>W</mi><mi>C</mi><mn>2018</mn></mrow><annotation encoding="application/x-tex">BJWC2018</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.05017em;">B</span><span class="mord mathdefault" style="margin-right:0.09618em;">J</span><span class="mord mathdefault" style="margin-right:0.13889em;">W</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord">2</span><span class="mord">0</span><span class="mord">1</span><span class="mord">8</span></span></span></span> 餐巾计划问题 / <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>U</mi><mi>S</mi><mi>A</mi><mi>C</mi><mi>O</mi><mn>08</mn><mi>N</mi><mi>O</mi><mi>V</mi><mi>T</mi><mi>o</mi><mi>y</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">USACO08NOV Toys</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8777699999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault">A</span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord">0</span><span class="mord">8</span><span class="mord mathdefault" style="margin-right:0.10903em;">N</span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mord mathdefault" style="margin-right:0.22222em;">V</span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mord mathdefault">s</span></span></span></span><br>
+题意一样 但是数据加强 考虑贪心<br>
+以下内容大量借鉴 radish布団 大佬<br>
+https://www.luogu.org/blog/radish/solution-p4480</p>
+<p>我们假设在这n天内一共购买了<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span>块新餐巾 而最优解一共购买了<span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>m</mi><mi>a</mi></msub><mi>n</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">m_ans</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">n</span><span class="mord mathdefault">s</span></span></span></span><br>
+若<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mo>=</mo><msub><mi>m</mi><mi>a</mi></msub><mi>n</mi><mi>s</mi><mo>+</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">m=m_ans+k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">n</span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span>由于购买新餐巾必然比洗旧餐巾贵 因此多买必定不优<br>
+若<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mo>=</mo><msub><mi>m</mi><mi>a</mi></msub><mi>n</mi><mi>s</mi><mo>−</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">m=m_ans-k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.73333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">a</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathdefault">n</span><span class="mord mathdefault">s</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span>那么在网络流的图上表示买新餐巾的边就少流了一次<br>
+由于在网络流中我们寻找的是最短路 那么少流一条最短路中的边也就说明走了一条较长路<br>
+因此少买必定不优 综上 总花费关于新餐巾购买数的函数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mclose">)</span></span></span></span> 为单峰函数 三分解决</p>
+<p>通过分析网络流解法的建图方式可以发现 每天的干净餐巾来源有4个<br>
+1在前几天买了但还没用完的干净餐巾<br>
+2在今天买的干净餐巾<br>
+3在timfst天前送去慢洗部的脏餐巾<br>
+4在timslo天前送去快洗部的脏餐巾</p>
+<p>可以依据以上四条进行贪心<br>
+1若还有新餐巾没用完 则先用新餐巾<br>
+2新餐巾用完后 优先用慢洗部送来的餐巾 且优先用较晚送来的餐巾<br>
+3慢洗部送来的餐巾用完后 用快洗部送来的餐巾 且优先用较晚送来的餐巾<br>
+4若快洗部送来的餐巾用完后仍不满足今日所需 则说明此情况无解</p>
+<p>关于第二条 有可能我们一些餐巾正在快洗部 一些餐巾在慢洗部<br>
+先用慢洗部的 给了快洗部的餐巾可能到慢洗部洗的机会</p>
+<p>三分卖多少条餐巾 在第一天就把它们全买了<br>
+我们维护三个队列<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi>o</mi><mi>u</mi><mi>f</mi><mi>s</mi><mi>t</mi><mi>f</mi><mi>l</mi><mi>o</mi></mrow><annotation encoding="application/x-tex">nou fst flo</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span></span></span></span><br>
+队列每个元素维护这一组餐巾上一次被用完的时间<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>i</mi><mi>r</mi><mi>s</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">first</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span></span></span></span>数量<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>e</mi><mi>c</mi><mi>o</mi><mi>n</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">second</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mord mathdefault">c</span><span class="mord mathdefault">o</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span></span></span></span><br>
+每天一过 将当天用过的餐巾加到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi>o</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">nou</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span></span></span></span>队列中 表示正在慢洗<br>
+每天一开始 检查<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi>o</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">nou</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault">o</span><span class="mord mathdefault">u</span></span></span></span> 检查最早加入的元素是否被快洗完了<br>
+完了就加入<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>s</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">fst</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span></span></span></span> 表示完成快洗 正在慢洗<br>
+对于<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>s</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">fst</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">s</span><span class="mord mathdefault">t</span></span></span></span>队列同理<br>
+对于每天需要的餐巾 先用买过的 在取完成慢洗的较晚的<br>
+再取完成快洗较晚的</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define fir first
+#define sec second
+
+const int N=200010;
+typedef pair&lt;int,int&gt; pii;
+int n,r[N],sum,prislo,prifst,prinou,timslo,timfst;
+deque&lt;pii&gt;slo,fst,nou;
+
+inline int cal(int buy)
+{
+	int res=prinou*buy;
+	slo.clear(),fst.clear(),nou.clear();
+	for(int i=1;i&lt;=n;i++)
+	{
+		while(nou.size() &amp;&amp; nou.front().fir&lt;=i-timfst)
+			fst.push_back(nou.front()),nou.pop_front();
+		while(fst.size() &amp;&amp; fst.front().fir&lt;=i-timslo)
+			slo.push_back(fst.front()),fst.pop_front();
+		int ned=r[i],mini=min(ned,buy);
+		buy-=mini,ned-=mini;
+		while(ned &amp;&amp; slo.size())
+		{
+			int tem=min(ned,slo.back().sec);
+			res+=tem*prislo;
+			ned-=tem;
+			if(tem==slo.back().sec)slo.pop_back();
+			else slo.back().sec-=tem;
+		}
+		while(ned &amp;&amp; fst.size())
+		{
+			int tem=min(ned,fst.back().sec);
+			res+=tem*prifst;
+			ned-=tem;
+			if(tem==fst.back().sec)fst.pop_back();
+			else fst.back().sec-=tem;
+		}
+		if(ned)return 0x7fffffff;
+		nou.push_back(make_pair(i,r[i]));
+	}
+	return res;
+}
+
+int main()
+{
+	scanf(&quot;%d%d%d%d%d%d&quot;,&amp;n,&amp;timfst,&amp;timslo,&amp;prifst,&amp;prislo,&amp;prinou);
+	if(timfst&gt;timslo)swap(timfst,timslo),swap(prifst,prislo);
+	if(prislo&gt;prifst)prislo=prifst,timslo=timfst;
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%d&quot;,&amp;r[i]),sum+=r[i];
+	int l=0,r=sum;
+	while(r-l&gt;2)
+	{
+		int midl=(l*2+r)/3,midr=(l+r*2+2)/3;
+		int pril=cal(midl),prir=cal(midr);
+		pril&gt;=prir ? l=midl : r=midr;
+	}
+	int ans=0x7fffffff;
+	for(int i=l;i&lt;=r;i++)
+		ans=min(ans,cal(i));
+	printf(&quot;%d\n&quot;,ans);
+	return 0;
+}
+</code></pre>
+
+							</div>
+	<div class="wow bounceInDown vt-post-tags">
+ 
+					</div>						
+<nav class="navigation3 post-navigation3" role="navigation">
+		
+		<div class="nav-links3">
+      
+		 
+		<div class="wow bounceInRight nav-next3"><a href="https://rainyclementine.github.io/post/poi2008-plotpurchase-dp-xuan-xian-fa" rel="next"> POI2008 PlotPurchase DP 悬线法</a></div>
+		
+		</div>
+	</nav>
+	<div class="wow rollIn author-info" style="visibility: visible; animation-name: rollIn;">
+	<div class="author-avatar pull-left"><img src="https://rainyclementine.github.io/images/avatar.png" ></div>
+ 
+	<div class="author-description"><div class="author-title"><div class="author-link" rel="author">Siilhouette</div></div>
+
+
+		</div>
+		
+ 
+		
+</article>
+
+<div id="marlin_lite_about_widget-2" class="wow bounceInUp widget marlin_lite_about_widget" data-wow-delay="0.1s">
+		
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'bbf2f8bcec204d136c04',
+    clientSecret: 'c370b78d913e09adeb861e7e746fc4b0fd2102da',
+    repo: 'gitalk',
+    owner: 'RainyClementine',
+    admin: ['RainyClementine'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+          
+        
+		<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://rainyclementine.github.io/media/scripts/Valine.min.js'></script>
+
+<div class="comment"></div>
+<script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment',
+            lang: 'zh-cn',
+            
+            
+      emoticon_list: ["吐.png","喷血.png","狂汗.png","不说话.png","汗.png","坐等.png","献花.png","不高兴.png","中刀.png","害羞.png","皱眉.png","小眼睛.png","中指.png","尴尬.png","瞅你.png","想一想.png","中枪.png","得意.png","肿包.png","扇耳光.png","亲亲.png","惊喜.png","脸红.png","无所谓.png","便便.png","愤怒.png","蜡烛.png","献黄瓜.png","内伤.png","投降.png","观察.png","看不见.png","击掌.png","抠鼻.png","邪恶.png","看热闹.png","口水.png","抽烟.png","锁眉.png","装大款.png","吐舌.png","无奈.png","长草.png","赞一个.png","呲牙.png","无语.png","阴暗.png","不出所料.png","咽气.png","期待.png","高兴.png","吐血倒地.png","哭泣.png","欢呼.png","黑线.png","喜极而泣.png","喷水.png","深思.png","鼓掌.png","暗地观察.png"],
+     	
+      	
+          
+        });
+    </script> 
+
+
+   
+  
+ 
+
+		</div>
+
+			</div>
+			
+
+
+<div class="tocc col l3 hide-on-med-and-down">
+	
+        <div class="toc-widget">
+			
+            <div class="toc-title"></div>
+			
+            <div id="toc-content">
+			
+			
+			</div>
+        </div>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.5.0/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '.entry-summary',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('.entry-summary').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>										 
+
+ 
+       
+
+
+			</div>
+		</div>
+
+		
+		 	<footer id="colophon" class="site-footer">
+
+			<div class="container">
+	
+				<div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a><br>Theme:   <a href="https://github.com/alterfang/gridea-theme-pan" target="_blank" title="Pan"><span>Pan</span></a>. Powered by <a href="https://gridea.dev/" target="_blank" title="Gridea"><span>Gridea</span></a></div>		
+			</div>
+		
+		</footer>
+
+</div>
+
+<script src="https://cdn.bootcss.com/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+<script type='text/javascript' src='https://rainyclementine.github.io/media/scripts/marlin-scripts.js'></script>
+ <script src="//tokinx.github.io/lately/lately.min.js"></script>
+  <script>jQuery(document).ready(function(){$.lately({'target':'.lately-a,.lately-b,.lately-c'})});</script>
+  <style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span><i class="iconfont icon-xiangshang"></i></span>
+</a>
+
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+		<script data-no-instant>
+    (function ($) {
+        $.extend({
+            adamsOverload: function () {
+                $('.navigation:eq(0)').remove();
+                $("").attr("rel" , "external");
+                $("a[rel='external'],a[rel='external nofollow']").attr("target","_blank");
+                $("a.vi").attr("rel" , "");
+                $.viewImage({
+                    'target'  : 'img',
+                    'exclude' : '.vsmile-icons img,.gallery img',
+                    'delay'   : 300
+                });
+                $.lately({
+                    'target' : '.commentmetadata a,.infos time,.post-list time'
+                });
+                prettyPrint();
+                
+                $('ul.links li a').each(function(){
+                    if($(this).parent().find('.bg').length==0){
+                        $(this).parent().append('<!---<div class="bg" style="background-image:url(https://c3.glgoo.top/s2/favicons?domain='+$(this).attr("href")+')"></div>--->')
+                    }
+                });
+            }
+        });
+    })(jQuery);
+    jQuery.adamsOverload();
+</script>
+
+</body>
+</html>
