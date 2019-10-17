@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-10-16T07:23:36.044Z</updated>
+    <updated>2019-10-17T01:27:42.778Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -10,6 +10,127 @@
     <logo>https://rainyclementine.github.io/images/avatar.png</logo>
     <icon>https://rainyclementine.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Siilhouette</rights>
+    <entry>
+        <title type="html"><![CDATA[类锯木厂选址三题 斜率优化DP]]></title>
+        <id>https://rainyclementine.github.io/post/lei-ju-mu-han-xuan-zhi-san-ti-xie-lu-you-hua-dp</id>
+        <link href="https://rainyclementine.github.io/post/lei-ju-mu-han-xuan-zhi-san-ti-xie-lu-you-hua-dp">
+        </link>
+        <updated>2019-10-17T01:19:17.000Z</updated>
+        <content type="html"><![CDATA[<p>CEOI2004 锯木厂选址<br>
+山坡上有n棵数 每棵树有一个位置<br>
+di表示离下一棵数的距离<br>
+wi表示树的重量<br>
+每棵树会运到ta右边离ta最近的锯木厂 代价是到锯木厂的距离*wi<br>
+n+1的位置已经有一个锯木厂<br>
+再修两个锯木厂 最小化代价</p>
+<p>s[i]表示w[i]的前缀和<br>
+d[i]表示dis的后缀和<br>
+f[i]表示第二个锯木厂选址在i的最小代价<br>
+f[i]=min(sum-d[j]<em>s[j]-d[i]</em>(s[i]-s[j]))</p>
+<p>当k比j优时 有<br>
+-d[j]<em>d[j]-d[i]</em>(s[i]-s[j])&gt;-d[k]<em>s[k]-d[i]</em>(s[i]-s[k])<br>
+即 (d[k]*s[k]-d[j]*s[j])/(s[k]+s[j]) &gt; d[i]<br>
+即维护一个下凸包即可</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N=20010;
+int n,sum,w[N],s[N],d[N],q[N],f[N];
+
+inline double slope(int x,int y){
+	return (1.0*d[x]*s[x]-d[y]*s[y])/(1.0*s[x]-s[y]);
+}
+
+int main()
+{
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%d%d&quot;,&amp;w[i],&amp;d[i]),s[i]=s[i-1]+w[i];
+	for(int i=n;i;i--)
+		d[i]+=d[i+1],sum+=w[i]*d[i];
+	int l=1,r=1;
+	for(int i=1;i&lt;=n;i++)
+	{
+		while(l&lt;r &amp;&amp; slope(q[l],q[l+1])&gt;1.0*d[i])l++;
+		f[i]=sum-d[q[l]]*s[q[l]]-d[i]*(s[i]-s[q[l]]);
+		while(l&lt;r &amp;&amp; slope(q[r],i)&gt;slope(q[r-1],q[r]))r--;
+		q[++r]=i;
+	}
+	int ans=0x3f3f3f3f;
+	for(int i=1;i&lt;=n;i++)
+		ans=min(ans,f[i]);
+	printf(&quot;%d\n&quot;,ans);
+	return 0;
+}
+</code></pre>
+<p>当然 也可以退火</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define int long long 
+
+const int N=20010;
+typedef long long ll;
+const double eps=1e-3;
+const double del=0.99;
+int n,ans=2000000000,ansA,ansB,sum[N],c[N],dis[N];
+struct Node{int d,w;}a[N];
+
+inline double gettime(){return (double)clock()/CLOCKS_PER_SEC;}
+inline int cal(int x,int y)
+{
+	if(x&gt;y)swap(x,y);
+	int res=sum[x];
+	res+=sum[y]-sum[x]-c[x]*(dis[y]-dis[x]);
+	res+=sum[n+1]-sum[y]-c[y]*(dis[n+1]-dis[y]);
+	return res;
+}
+
+inline void sa()
+{
+	double tem=1989;
+	while(tem&gt;eps)
+	{
+		int nouA=ansA,nouB=ansB;
+		if(rand()%2)
+		{
+			nouA=ansA+(rand()%n)*(rand()%2?1:-1);
+			while(nouA==nouB || nouA&lt;1 || nouA&gt;n)
+				nouA=ansA+(rand()%n)*(rand()%2?1:-1);
+		}
+		else
+		{
+			nouB=ansB+(rand()%n)*(rand()%2?1:-1);
+			while(nouA==nouB || nouB&lt;1 || nouB&gt;n)
+				nouB=ansB+(rand()%n)*(rand()%2?1:-1);
+		}
+		int nouans=cal(nouA,nouB);
+		int sub=nouans-ans;
+		if(sub&lt;0)
+			ansA=nouA,ansB=nouB,ans=nouans;
+		else if(exp(-sub/tem)*RAND_MAX&gt;rand())
+			ansA=nouA,ansB=nouB;
+		tem*=del;
+	}
+}
+
+signed main()
+{
+	scanf(&quot;%d&quot;,&amp;n);
+	for(int i=1;i&lt;=n;i++)
+		scanf(&quot;%d%d&quot;,&amp;a[i].w,&amp;a[i].d);
+	for(int i=1;i&lt;=n+1;i++)
+		sum[i]=sum[i-1]+c[i-1]*a[i-1].d,
+		c[i]=c[i-1]+a[i].w,
+		dis[i+1]=dis[i]+a[i].d;
+	ansA=rand()%n+1;ansB=rand()%n+1;
+	while(ansB==ansA)ansB=rand()%n+1;
+	while(gettime()&lt;0.8)sa();
+	printf(&quot;%d\n&quot;,ans);
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[POI2015 Pustynia 差分约束 线段树优化建图]]></title>
         <id>https://rainyclementine.github.io/post/poi2015-pustynia-chai-fen-yue-shu-xian-duan-shu-you-hua-jian-tu</id>
@@ -936,94 +1057,6 @@ int main()
 				if(j)f[i&amp;1][j][1]=max(f[(i-1)&amp;1][j-1][0],f[(i-1)&amp;1][j-1][1]+u[i]);
 			}
 		ans=max(ans,f[n&amp;1][B][1]);
-		printf(&quot;%d\n&quot;,ans);
-	}
-	return 0;
-} 
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[POJ3585 AccumulationDegree 换根DP]]></title>
-        <id>https://rainyclementine.github.io/post/poj3585-accumulationdegree-huan-gen-dp</id>
-        <link href="https://rainyclementine.github.io/post/poj3585-accumulationdegree-huan-gen-dp">
-        </link>
-        <updated>2019-09-24T09:34:51.000Z</updated>
-        <content type="html"><![CDATA[<p>给定一棵树 每条边有流量限制w(x,y) 每个叶子都是汇点<br>
-求以哪个店为源点时 流量最大</p>
-<p>先求出以1为根时的每个点的流量d[i]<br>
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mo>[</mo><mi>x</mi><mo>]</mo><mo>=</mo><mi>s</mi><mi>i</mi><mi>g</mi><mi>m</mi><mi>a</mi><mo>{</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo><mi>d</mi><mo>[</mo><mi>y</mi><mo>]</mo><mo separator="true">,</mo><mi>w</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>)</mo><mo>)</mo><mo>}</mo></mrow><annotation encoding="application/x-tex">d[x]=sigma\{min(d[y],w(x,y))\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mopen">{</span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mclose">)</span><span class="mclose">}</span></span></span></span><br>
-当<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span></span></span></span>是叶子时 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mo>[</mo><mi>x</mi><mo>]</mo><mo>=</mo><mi>w</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">d[x]=w(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span><br>
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>x</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f[x]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span></span></span></span>表示以<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">x</span></span></span></span>为根时的流量<br>
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mn>1</mn><mo>]</mo><mo>=</mo><mi>d</mi><mo>[</mo><mn>1</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">f[1]=d[1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord">1</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord">1</span><span class="mclose">]</span></span></span></span><br>
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>y</mi><mo>]</mo><mo>=</mo><mi>d</mi><mo>[</mo><mi>y</mi><mo>]</mo><mo>+</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo><mi>f</mi><mo>[</mo><mi>x</mi><mo>]</mo><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo><mi>d</mi><mo>[</mo><mi>y</mi><mo>]</mo><mo separator="true">,</mo><mi>z</mi><mo>)</mo><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f[y]=d[y]+min(f[x]-min(d[y],z),z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span></p>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>x</mi><mo>]</mo><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo>(</mo><mi>d</mi><mo>[</mo><mi>y</mi><mo>]</mo><mo separator="true">,</mo><mi>z</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f[x]-min(d[y],z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">x</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mopen">(</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">]</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="mclose">)</span></span></span></span>是除了y子树 其他点到x的流量<br>
-当x是叶子时<br>
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>y</mi><mo>]</mo><mo>=</mo><mi>d</mi><mo>[</mo><mi>y</mi><mo>]</mo><mo>+</mo><mi>w</mi><mo>(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f[y]=d[y]+w(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord mathdefault">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></p>
-<pre><code>#include&lt;algorithm&gt;
-#include&lt;cstring&gt;
-#include&lt;cstdio&gt;
-using namespace std;
-
-const int N=300010;
-int n,m,tot,head[N],ind[N],d[N],f[N];
-struct Edge{
-	int ver,suiv,edge;
-}e[N&lt;&lt;1];
-
-inline void lnk(int x,int y,int z)
-{
-	e[++tot].ver=y;
-	e[tot].edge=z;
-	e[tot].suiv=head[x];
-	head[x]=tot;
-}
-
-inline void dfs1(int x,int fa)
-{
-	for(int i=head[x];i;i=e[i].suiv)
-	{
-		int y=e[i].ver,z=e[i].edge;
-		if(y==fa)continue;
-		dfs1(y,x);
-		d[x]+=min(d[y],z);
-		if(ind[y]==1)d[x]+=z;
-	}
-}
-
-inline void dfs2(int x,int fa)
-{
-	if(x==1)f[x]=d[x];
-	for(int i=head[x];i;i=e[i].suiv)
-	{
-		int y=e[i].ver,z=e[i].edge;
-		if(y==fa)continue;
-		if(ind[x]==1)f[y]=d[y]+z;
-		else f[y]=d[y]+min(f[x]-min(d[y],z),z);
-		dfs2(y,x);
-	}
-}
-
-int main()
-{
-	int T;
-	scanf(&quot;%d&quot;,&amp;T);
-	while(T--)
-	{
-		tot=0;
-		memset(f,0,sizeof(f));
-		memset(d,0,sizeof(d));
-		memset(ind,0,sizeof(ind));
-		memset(head,0,sizeof(head));
-		scanf(&quot;%d&quot;,&amp;n);
-		for(int i=1,x,y,z;i&lt;n;i++)
-			scanf(&quot;%d%d%d&quot;,&amp;x,&amp;y,&amp;z),
-			lnk(x,y,z),lnk(y,x,z),ind[x]++,ind[y]++;
-		dfs1(1,0);
-		dfs2(1,0);
-		int ans=0;
-		for(int i=1;i&lt;=n;i++)
-			ans=max(ans,f[i]);
 		printf(&quot;%d\n&quot;,ans);
 	}
 	return 0;
