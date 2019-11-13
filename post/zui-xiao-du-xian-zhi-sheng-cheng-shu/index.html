@@ -1,0 +1,615 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache"> 
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate"> 
+<meta HTTP-EQUIV="expires" CONTENT="0"> 
+<title>最小度限制生成树 | Siilhouette</title>	
+
+<link rel="stylesheet" href="https://rainyclementine.github.io/styles/main.css">
+<script type="text/javascript">
+function getCSS()
+{
+        datetoday = new Date();
+        timenow=datetoday.getTime();
+        datetoday.setTime(timenow);
+        thehour = datetoday.getHours();
+
+            display = "https://rainyclementine.github.io/media/css/night.css";
+
+            display = "https://rainyclementine.github.io/media/css/night.css";   
+      
+            display = "https://rainyclementine.github.io/media/css/day.css";
+
+            display = "https://rainyclementine.github.io/media/css/day.css";
+      
+
+var css = '<';
+        css+='link rel="stylesheet" href='+display+' \/';
+        css+='>';
+        document.write(css);
+}
+</script>
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script|Noto+Sans+SC:300|Montserrat&display=swap" rel="stylesheet">
+<link href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css" rel="stylesheet" />
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<script type='text/javascript' src='https://rainyclementine.github.io/media/scripts/script.js'></script>
+<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet" />
+  <script src="https://cdn.bootcss.com/wow/1.1.2/wow.min.js"></script>
+  <script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script>wow=new WOW({boxClass:'wow',animateClass:'animated',offset:0,mobile:true,live:true});wow.init();</script>
+
+<script type="text/javascript">
+window.onload=getCSS();
+</script>
+
+
+ 	
+</head>
+<body class="post-template-default single single-post postid-70 single-format-standard">
+    <div id="wrapper">
+        
+			
+		<header id="header" class="site-header" 
+		
+		>
+			<div class="site-branding">
+									<h1 class="site-title"><a href="https://rainyclementine.github.io" rel="home">Siilhouette</a></h1>
+										
+					<h2 class="site-description">Rearrange the stars</h2>
+										
+							</div>
+			<nav id="nav-wrapper">
+				<div class="container">
+					<div class="nav-toggle">
+						<div class="bars">
+							<div class="bar"></div>
+							<div class="bar"></div>
+							<div class="bar"></div>
+						</div>
+					</div>
+					<div class="clear"></div>
+					<ul id="" class="dove">
+		 
+     			
+<li>
+	 
+	<a  href="/"> 首页</a></li>
+	
+    
+     			
+<li>
+	 
+	<a  href="/archives"> 归档</a></li>
+	
+    
+     			
+<li>
+	 
+	<a  href="/tags"> 标签</a></li>
+	
+    
+     			
+<li>
+	 
+	<a  href="/post/about"> 关于</a></li>
+	
+    
+     			
+<li>
+	 
+	<a  href="/post/links"> 友链</a></li>
+	
+    
+
+</ul>
+</li>		
+		
+</ul>				</div>
+			</nav>
+						<div class="jingge">
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        </header>
+
+		<div id="content" class="container">
+			<div class="row">
+	<div class="col-md-8 site-main">
+				
+<article id="post-70" class="post-70 post type-post status-publish format-standard hentry category-5 tag-10 tag-9 tag-11">
+
+	
+	                      
+		<div class="entry-content">
+			<h1 class="wow swing entry-title">最小度限制生成树</h1>
+<div class="entry-meta">
+<div class="wow bounce">
+	<i class="iconfont icon-rili"> <time class="lately-a" datetime="2019-11-13 08:10:18" itemprop="datePublished" pubdate="">2019-11-13</time></i>
+	          </div>
+			
+</span>
+													 
+		</div>
+                  
+			<div class="wow slideInLeft entry-summary song">
+				<p>给你一个有n个节点m条边的带权无向图 你需要求得一个生成树<br>
+使边权总和最小 且满足编号为s的节点正好连了k条边</p>
+<p>解法一 破圈<br>
+先将s点和其他点断开 对形成的连通块做kruskal<br>
+如果连通块数量m&gt;k 显然无解<br>
+从s点向每个连通块连一条最短的边<br>
+再枚举一条和s相连的非树边<br>
+向求严格次小生成树那样 用这条边替换形成的环上最长的边<br>
+重复执行m-k次 或者不能使答案更优<br>
+POJ1639 Picnic Planning</p>
+<pre><code class="language-cpp">#include&lt;algorithm&gt;
+#include&lt;cstring&gt;
+#include&lt;cstdio&gt;
+#include&lt;string&gt;
+#include&lt;map&gt;
+using namespace std;
+
+const int N=1010;
+int n,m,k,tot,head[N];
+int inf,a[N][N],b[N][N],fa[N],d[N],v[N];
+map&lt;string,int&gt;M;
+struct Edge{
+	int x,y,z;
+	inline bool operator &lt;(const Edge&amp; that)const{
+		return z&lt;that.z;
+	}
+}e[N],f[N];
+
+inline int discrete(string s){return M[s]?M[s]:M[s]=++n;}
+inline int find(int x){return x==fa[x]?x:fa[x]=find(fa[x]);}
+inline void dfs(int x,int fat)
+{
+	for(int i=2;i&lt;=n;i++)
+	{
+		if(i==fat || !b[x][i])continue;
+		if(f[i].z==-1)
+		{
+			if(f[x].z&gt;a[x][i])f[i]=f[x];
+			else
+			{
+				f[i].x=x;
+				f[i].y=i;
+				f[i].z=a[x][i];
+			}
+		}
+		dfs(i,x);
+	}
+}
+
+int main()
+{
+	scanf(&quot;%d&quot;,&amp;m);
+	discrete(&quot;Park&quot;);
+	memset(a,0x3f,sizeof(a));
+	inf=a[0][0];
+	memset(d,0x3f,sizeof(d));
+	char x[N],y[N];
+	for(int i=1;i&lt;=m;i++)
+	{
+		scanf(&quot;%s%s%d&quot;,x,y,&amp;e[i].z);
+		e[i].x=discrete(x);e[i].y=discrete(y);
+		a[e[i].x][e[i].y]=a[e[i].y][e[i].x]=min(a[e[i].x][e[i].y],e[i].z);
+	}
+	for(int i=1;i&lt;=n;i++)
+		fa[i]=i;
+	int sum=0;
+	scanf(&quot;%d&quot;,&amp;k);
+	sort(e+1,e+1+m);
+	for(int i=1;i&lt;=m;i++)
+	{
+		if(e[i].x==1 || e[i].y==1)continue;
+		int fx=find(e[i].x);
+		int fy=find(e[i].y);
+		if(fx==fy)continue;
+		fa[fy]=fx;
+		b[e[i].x][e[i].y]=b[e[i].y][e[i].x]=1;
+		sum+=e[i].z;
+	}
+	for(int i=2;i&lt;=n;i++)
+		if(a[1][i]!=inf)
+		{
+			int root=find(i);
+			if(d[root]&gt;a[1][i])d[root]=a[1][v[root]=i];
+		}
+	for(int i=1;i&lt;=n;i++)
+		if(d[i]!=inf)
+		{
+			k--;
+			b[1][v[i]]=b[v[i]][1]=1;
+			sum+=a[1][v[i]];
+		}
+	while(k--)
+	{
+		memset(f,-1,sizeof(f));
+		f[1].z=-inf;
+		for(int i=2;i&lt;=n;i++)
+			if(b[1][i])f[i].z=-inf;
+		dfs(1,-1);
+		int pos,maxi=-inf;
+		for(int i=2;i&lt;=n;i++)
+			if(maxi&lt;f[i].z-a[1][i])
+				maxi=f[i].z-a[1][pos=i];
+		if(maxi&lt;=0)break;
+		b[1][pos]=b[pos][1]=1;
+		b[f[pos].x][f[pos].y]=b[f[pos].y][f[pos].x]=0;
+		sum-=maxi;
+	}
+	printf(&quot;Total miles driven: %d\n&quot;,sum);
+	return 0;
+}
+</code></pre>
+<p>解法二 带权二分<br>
+带权二分<br>
+在kruskal对边排序时 对所有与s相连的边加上一个权值<br>
+二分这个权值 使得在MST中与s相连的边就是k条<br>
+注意 如果在二分边界已经收敛 但是和s相连的边数还是大于k<br>
+那么最后再计算一次答案 本次计算答案时 如果和s相连的边已经等于k<br>
+那么之后只连不和s相连的边<br>
+注意特判无解情况<br>
+一是和s相连的点小于k<br>
+二是n&gt;1 &amp;&amp; !k<br>
+三是生不成一棵树<br>
+CF125E MST Company</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N=50010;
+const int M=500010;
+const double eps=0.1;
+typedef long long ll;
+int n,m,k,s,sum,cap,top,fa[N],id[M],stk[M];
+ll ans;
+
+struct Node{
+	int x,y,z;
+	inline bool operator &lt;(const Node&amp; that)const{
+		return z&lt;that.z;
+	}
+}a[M];
+
+double wet;
+inline bool cmp(const int&amp; p,const int&amp; q){
+	double lw=a[p].z,rw=a[q].z;
+	if(a[p].x==s || a[p].y==s)lw+=wet;
+	if(a[q].x==s || a[q].y==s)rw+=wet;
+	return lw&lt;rw;
+}
+
+inline int find(int x){return x==fa[x]?x:fa[x]=find(fa[x]);}
+inline void valid(bool op)
+{
+	sum=cap=top=0;
+	for(int i=1;i&lt;=n;i++)fa[i]=i;
+	sort(id+1,id+1+m,cmp);
+	for(int i=1,fx,fy;i&lt;=m;i++)
+	{
+		fx=find(a[id[i]].x),fy=find(a[id[i]].y);
+		if(fx==fy)continue;
+		if(a[id[i]].x==s || a[id[i]].y==s)cap++;
+		if(op &amp;&amp; cap&gt;k){cap--;continue;}
+		fa[fx]=fy;stk[++top]=id[i];
+		if(++sum==n-1)return;
+	}
+}
+
+int main()
+{
+	scanf(&quot;%d%d%d%d&quot;,&amp;n,&amp;m,&amp;k);s=1;
+	int ind=0;
+	for(int i=1;i&lt;=m;i++)
+	{
+		scanf(&quot;%d%d%d&quot;,&amp;a[i].x,&amp;a[i].y,&amp;a[i].z);
+		if(a[i].x==s || a[i].y==s)ind++;
+	}
+	if(ind&lt;k || (n&gt;1 &amp;&amp; !k)){puts(&quot;Impossible&quot;);return 0;}
+	for(int i=1;i&lt;=m;i++)id[i]=i;
+	valid(0);
+	if(sum&lt;n-1){puts(&quot;Impossible&quot;);return 0;}
+	double l=-1e5,r=1e5+0.5;
+	while(1)
+	{
+		if(cap==k)break;
+		if(l+eps&gt;r &amp;&amp; cap&gt;k)break;
+		double mid=(l+r)/2;
+		wet=mid;
+		valid(0);
+		if(cap&lt;k)r=mid;
+		else l=mid;
+	}
+	if(cap!=k)valid(1);
+	for(int i=1;i&lt;=top;i++)
+		ans+=1ll*a[stk[i]].z;
+	printf(&quot;%lld\n&quot;,ans);
+	return 0;
+}
+</code></pre>
+
+							</div>
+	<div class="wow bounceInDown vt-post-tags">
+ 
+					</div>						
+<nav class="navigation3 post-navigation3" role="navigation">
+		
+		<div class="nav-links3">
+      
+		 
+		<div class="wow bounceInRight nav-next3"><a href="https://rainyclementine.github.io/post/hdoj4348-to-the-moon-biao-ji-yong-jiu-hua" rel="next"> HDOJ4348 To the moon 标记永久化</a></div>
+		
+		</div>
+	</nav>
+	<div class="wow rollIn author-info" style="visibility: visible; animation-name: rollIn;">
+	<div class="author-avatar pull-left"><img src="https://rainyclementine.github.io/images/avatar.png" ></div>
+ 
+	<div class="author-description"><div class="author-title"><div class="author-link" rel="author">Siilhouette</div></div>
+
+
+		</div>
+		
+ 
+		
+</article>
+
+<div id="marlin_lite_about_widget-2" class="wow bounceInUp widget marlin_lite_about_widget" data-wow-delay="0.1s">
+		
+        
+          
+            <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'bbf2f8bcec204d136c04',
+    clientSecret: 'c370b78d913e09adeb861e7e746fc4b0fd2102da',
+    repo: 'gitalk',
+    owner: 'RainyClementine',
+    admin: ['RainyClementine'],
+    id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false  // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+          
+          
+        
+		<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://rainyclementine.github.io/media/scripts/Valine.min.js'></script>
+
+<div class="comment"></div>
+<script>
+        new Valine({
+            // AV 对象来自上面引入av-min.js(老司机们不要开车➳♡゛扎心了老铁)
+            av: AV, 
+            el: '.comment',
+            lang: 'zh-cn',
+            
+            
+      emoticon_list: ["吐.png","喷血.png","狂汗.png","不说话.png","汗.png","坐等.png","献花.png","不高兴.png","中刀.png","害羞.png","皱眉.png","小眼睛.png","中指.png","尴尬.png","瞅你.png","想一想.png","中枪.png","得意.png","肿包.png","扇耳光.png","亲亲.png","惊喜.png","脸红.png","无所谓.png","便便.png","愤怒.png","蜡烛.png","献黄瓜.png","内伤.png","投降.png","观察.png","看不见.png","击掌.png","抠鼻.png","邪恶.png","看热闹.png","口水.png","抽烟.png","锁眉.png","装大款.png","吐舌.png","无奈.png","长草.png","赞一个.png","呲牙.png","无语.png","阴暗.png","不出所料.png","咽气.png","期待.png","高兴.png","吐血倒地.png","哭泣.png","欢呼.png","黑线.png","喜极而泣.png","喷水.png","深思.png","鼓掌.png","暗地观察.png"],
+     	
+      	
+          
+        });
+    </script> 
+
+
+   
+  
+ 
+
+		</div>
+
+			</div>
+			
+
+
+<div class="tocc col l3 hide-on-med-and-down">
+	
+        <div class="toc-widget">
+			
+            <div class="toc-title"></div>
+			
+            <div id="toc-content">
+			
+			
+			</div>
+        </div>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.5.0/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '.entry-summary',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('.entry-summary').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+    });
+</script>										 
+
+ 
+       
+
+
+			</div>
+		</div>
+
+		
+		 	<footer id="colophon" class="site-footer">
+
+			<div class="container">
+	
+				<div class="copyright">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a><br>Theme:   <a href="https://github.com/alterfang/gridea-theme-pan" target="_blank" title="Pan"><span>Pan</span></a>. Powered by <a href="https://gridea.dev/" target="_blank" title="Gridea"><span>Gridea</span></a></div>		
+			</div>
+		
+		</footer>
+
+</div>
+
+<script src="https://cdn.bootcss.com/fitvids/1.2.0/jquery.fitvids.min.js"></script>
+<script type='text/javascript' src='https://rainyclementine.github.io/media/scripts/marlin-scripts.js'></script>
+ <script src="//tokinx.github.io/lately/lately.min.js"></script>
+  <script>jQuery(document).ready(function(){$.lately({'target':'.lately-a,.lately-b,.lately-c'})});</script>
+  <style type="text/css">a.back_to_top {
+    text-decoration: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    background: #f0f0f0;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    line-height: 36px;
+    font-size: 18px;
+    text-align: center;
+    transition-duration: .5s;
+    transition-propety: background-color;
+    display: none;
+}
+
+a.back_to_top span {
+    color: #888;
+}
+
+a.back_to_top:hover {
+    cursor: pointer;
+    background: #dfdfdf;
+}
+
+a.back_to_top:hover span {
+    color: #555;
+}
+
+@media print, screen and (max-width: 580px) {
+    .back_to_top {
+        display: none !important;
+    }
+}
+
+
+
+</style><a id="back_to_top" href="#" class="back_to_top"><span><i class="iconfont icon-xiangshang"></i></span>
+</a>
+
+
+<script>$(document).ready((function(_this) {
+  return function() {
+    var bt;
+    bt = $('#back_to_top');
+    if ($(document).width() > 480) {
+      $(window).scroll(function() {
+        var st;
+        st = $(window).scrollTop();
+        if (st > 30) {
+          return bt.css('display', 'block');
+        } else {
+          return bt.css('display', 'none');
+        }
+      });
+      return bt.click(function() {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    }
+  };
+})(this));
+</script>
+
+		<script data-no-instant>
+    (function ($) {
+        $.extend({
+            adamsOverload: function () {
+                $('.navigation:eq(0)').remove();
+                $("").attr("rel" , "external");
+                $("a[rel='external'],a[rel='external nofollow']").attr("target","_blank");
+                $("a.vi").attr("rel" , "");
+                $.viewImage({
+                    'target'  : 'img',
+                    'exclude' : '.vsmile-icons img,.gallery img',
+                    'delay'   : 300
+                });
+                $.lately({
+                    'target' : '.commentmetadata a,.infos time,.post-list time'
+                });
+                prettyPrint();
+                
+                $('ul.links li a').each(function(){
+                    if($(this).parent().find('.bg').length==0){
+                        $(this).parent().append('<!---<div class="bg" style="background-image:url(https://c3.glgoo.top/s2/favicons?domain='+$(this).attr("href")+')"></div>--->')
+                    }
+                });
+            }
+        });
+    })(jQuery);
+    jQuery.adamsOverload();
+</script>
+
+</body>
+</html>
