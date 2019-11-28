@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-11-13T00:21:58.803Z</updated>
+    <updated>2019-11-28T10:56:10.658Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -10,6 +10,149 @@
     <logo>https://rainyclementine.github.io/images/avatar.png</logo>
     <icon>https://rainyclementine.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Siilhouette</rights>
+    <entry>
+        <title type="html"><![CDATA[第十四分块(前体) 莫队二次离线]]></title>
+        <id>https://rainyclementine.github.io/post/di-shi-si-fen-kuai-qian-ti-mo-dui-er-ci-chi-xian</id>
+        <link href="https://rainyclementine.github.io/post/di-shi-si-fen-kuai-qian-ti-mo-dui-er-ci-chi-xian">
+        </link>
+        <updated>2019-11-28T10:52:56.000Z</updated>
+        <content type="html"><![CDATA[<p>给定一个数列 多次询问(l,r)<br>
+每次询问al..ar 中ax xor ay有k位是1的二元组(x,y)个数</p>
+<p>二次离线莫队<br>
+对于贡献的计算 因为ai值域很小<br>
+所以可以把所有有k位1的数字预处理出来 存在valid[]中<br>
+update(x) 表示加入x到集合中<br>
+query(x) 返回集合中有多少个元素和x异或的结果中有k位是1<br>
+有两种配套的update和query的写法</p>
+<pre><code class="language-cpp">//1:
+inline void update(int x){c[x]++;}
+inline int query(int x)
+{
+	int res=0;
+	for(int i=1;i&lt;=cnt;i++)
+		res+=c[x^valid[i]];
+	return res;
+}
+//2:
+inline void update(int x)
+{
+	for(int i=1;i&lt;=cnt;i++)
+		c[x^valid[i]]++;
+}
+inline int query(int x){return c[x];}
+</code></pre>
+<p>在插入和询问同级时 复杂度是一样的<br>
+但是因为二次离线时 需要进行多次询问<br>
+询问次数远远大于查询 所以要采取第二种写法</p>
+<pre><code class="language-cpp">#pragma GCC optimize(&quot;Ofast&quot;)
+#pragma GCC target(&quot;sse3&quot;,&quot;sse2&quot;,&quot;sse&quot;)
+#pragma GCC target(&quot;avx&quot;,&quot;sse4&quot;,&quot;sse4.1&quot;,&quot;sse4.2&quot;,&quot;ssse3&quot;)
+#pragma GCC target(&quot;f16c&quot;)
+#pragma GCC target(&quot;fma&quot;,&quot;avx2&quot;)
+#pragma GCC target(&quot;xop&quot;,&quot;fma4&quot;)
+#pragma GCC optimize(&quot;inline&quot;,&quot;fast-math&quot;,&quot;unroll-loops&quot;,&quot;no-stack-protector&quot;)
+#pragma GCC diagnostic error &quot;-fwhole-program&quot;
+#pragma GCC diagnostic error &quot;-fcse-skip-blocks&quot;
+#pragma GCC diagnostic error &quot;-funsafe-loop-optimizations&quot;
+#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define getchar() (p1==p2&amp;&amp;(p2=(p1=buf)+fread(buf,1,1&lt;&lt;21,stdin),p1==p2)?EOF:*p1++)
+char buf[1&lt;&lt;23],*p1=buf,*p2=buf,obuf[1&lt;&lt;23],*O=obuf;
+
+const int N=100010;
+const int M=35000;
+typedef long long ll;
+int n,m,k,cnt,block,bel[N];
+ll a[N],ans[N],d1[N],d2[N],c[N],valid[N];
+
+struct Query{
+	int l,r,id;ll ans;
+	inline bool operator &lt;(const Query&amp; that)const{
+		return bel[l]==bel[that.l] ? bel[l]&amp;1 ?
+			r&lt;that.r : r&gt;that.r : l&lt;that.l ;
+	}
+}q[N];
+vector&lt;Query&gt;ml[N],mr[N];
+
+inline int g()
+{
+	register ll res=0,fix=1;
+	char ch;
+	while(!isdigit(ch=getchar()))
+		fix=(ch=='-')?-1:fix;
+	do res=res*10+(ch^'0');
+	while(isdigit(ch=getchar()));
+	return fix*res;
+}
+
+inline void out(ll x)
+{
+	if(x&lt;0)putchar('-'),x=-x;
+	if(x&gt;9)out(x/10);
+	putchar(x%10+'0');
+}
+
+inline void update(int x)
+{
+	for(int i=1;i&lt;=cnt;i++)
+		c[x^valid[i]]++;
+}
+
+int main()
+{
+	n=g(),m=g(),k=g();
+	for(register int i=0;i&lt;16390;i++)
+		if(__builtin_popcount(i)==k)valid[++cnt]=i;
+	for(register int i=1;i&lt;=n;i++)a[i]=g();
+	for(register int i=1;i&lt;=m;i++)
+		q[i].l=g(),q[i].r=g(),q[i].id=i;
+	block=(int)sqrt(n);
+	for(register int i=1;i&lt;=n;i++)
+		bel[i]=(i-1)/block+1;
+	for(register int i=1;i&lt;=n;i++)d1[i]=c[a[i]],update(a[i]);
+	memset(c,0,sizeof(c));
+	for(register int i=n;i;i--)d2[i]=c[a[i]],update(a[i]);
+	memset(c,0,sizeof(c));
+	sort(q+1,q+1+m);
+	int l=1,r=0;
+	for(register int i=1,L,R;i&lt;=m;i++)
+	{
+		L=q[i].l,R=q[i].r;
+		if(r&lt;R)ml[l-1].push_back((Query){r+1,R,i,-1});
+		while(r&lt;R)q[i].ans+=d1[++r];
+		if(r&gt;R)ml[l-1].push_back((Query){R+1,r,i,1});
+		while(r&gt;R)q[i].ans-=d1[r--];
+		if(l&lt;L)mr[r+1].push_back((Query){l,L-1,i,1});
+		while(l&lt;L)q[i].ans-=d2[l++];
+		if(l&gt;L)mr[r+1].push_back((Query){L,l-1,i,-1});
+		while(l&gt;L)q[i].ans+=d2[--l];
+	}
+	for(register int i=1;i&lt;=n;i++)
+	{
+		update(a[i]);
+		for(auto tem:ml[i])
+			for(int j=tem.l;j&lt;=tem.r;j++)
+				q[tem.id].ans+=tem.ans*c[a[j]]; 
+	}
+	memset(c,0,sizeof(c));
+	for(register int i=n;i;i--)
+	{
+		update(a[i]);
+		for(auto tem:mr[i])
+			for(int j=tem.l;j&lt;=tem.r;j++)
+				q[tem.id].ans+=tem.ans*c[a[j]];
+	}
+	for(register int i=1;i&lt;=m;i++)
+		q[i].ans+=q[i-1].ans;
+	for(register int i=1;i&lt;=m;i++)
+		ans[q[i].id]=q[i].ans;
+	for(register int i=1;i&lt;=m;i++)out(ans[i]),putchar('\n');
+	return 0;
+}
+</code></pre>
+<p>有两个点死活卡不过 不卡了</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[最小度限制生成树]]></title>
         <id>https://rainyclementine.github.io/post/zui-xiao-du-xian-zhi-sheng-cheng-shu</id>
@@ -283,7 +426,7 @@ signed main()
 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>u</mi><mi>m</mi><mo>(</mo><mi>q</mi><mo>)</mo><mo>=</mo><mi>s</mi><mi>u</mi><mi>m</mi><mo>(</mo><mi>l</mi><mo>(</mo><mi>q</mi><mo>)</mo><mo>)</mo><mo>+</mo><mi>s</mi><mi>u</mi><mi>m</mi><mo>(</mo><mi>r</mi><mo>(</mo><mi>q</mi><mo>)</mo><mo>)</mo><mo>+</mo><mn>1</mn><mi>l</mi><mi>l</mi><mo>∗</mo><mo>(</mo><mi>r</mi><mo>−</mo><mi>l</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>∗</mo><mi>a</mi><mi>d</mi><mi>d</mi><mo>(</mo><mi>q</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">sum(q)=sum(l(q))+sum(r(q))+1ll*(r-l+1)*add(q)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mclose">)</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mord mathdefault">d</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mclose">)</span></span></span></span><br>
 这样每个点的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">sum</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span></span></span></span> 就累积了它的下面节点的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>d</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">add</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mord mathdefault">d</span></span></span></span>的影响<br>
 查询时 维护一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">ad</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span></span></span></span> 表示从跟到当前节点打了多少<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>d</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">add</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mord mathdefault">d</span></span></span></span>标记<br>
-返回sum是 要加上<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>d</mi><mo>∗</mo><mo>(</mo><mi>r</mi><mo>−</mo><mi>l</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">ad*(r-l+1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span> 这就累计了这个点上面的节点的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>d</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">add</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mord mathdefault">d</span></span></span></span>的影响</p>
+返回<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">sum</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span></span></span></span>时 要加上<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>d</mi><mo>∗</mo><mo>(</mo><mi>r</mi><mo>−</mo><mi>l</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">ad*(r-l+1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span> 这就累计了这个点上面的节点的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi><mi>d</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">add</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">a</span><span class="mord mathdefault">d</span><span class="mord mathdefault">d</span></span></span></span>的影响</p>
 <pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
 using namespace std;
 
@@ -1389,66 +1532,6 @@ signed main()
 	puts(&quot;NIE&quot;);
 	return 0;
 }
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CF55D BeautifulNumbers 数位DP]]></title>
-        <id>https://rainyclementine.github.io/post/cf55d-beautifulnumbers-shu-wei-dp</id>
-        <link href="https://rainyclementine.github.io/post/cf55d-beautifulnumbers-shu-wei-dp">
-        </link>
-        <updated>2019-10-03T08:53:49.000Z</updated>
-        <content type="html"><![CDATA[<p>求<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span>到<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span></span></span></span>之间能被自己每一位数字整除的数的数量</p>
-<p>发现一到九的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>c</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">lcm</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">c</span><span class="mord mathdefault">m</span></span></span></span>是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2520</mn></mrow><annotation encoding="application/x-tex">2520</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">5</span><span class="mord">2</span><span class="mord">0</span></span></span></span><br>
-如果最后的数对<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2520</mn></mrow><annotation encoding="application/x-tex">2520</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">5</span><span class="mord">2</span><span class="mord">0</span></span></span></span>取模后仍然能整除选择的各位数字的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi>c</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">lcm</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">c</span><span class="mord mathdefault">m</span></span></span></span><br>
-那么它就能整除选择的各位数字<br>
-发现记忆化数组还是开不下 而<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2520</mn></mrow><annotation encoding="application/x-tex">2520</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">5</span><span class="mord">2</span><span class="mord">0</span></span></span></span>的因数只有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>48</mn></mrow><annotation encoding="application/x-tex">48</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mord">8</span></span></span></span>个 所以可以映射一下<br>
-对于这种只用记录选择数字的值的题 记录是否有前导零没有必要</p>
-<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
-using namespace std;
-#define int long long 
-
-const int N=20;
-const int mod=2520;
-int cnt,len,a[N],c[mod+10];
-int l,r,f[N][mod+10][60];
-
-inline int gcd(int x,int y){return y?gcd(y,x%y):x;}
-inline int dfs(int pos,int dig,int sum,bool init,bool lim)
-{
-	if(!pos)return sum%dig==0; 
-	if(!init &amp;&amp; !lim &amp;&amp; ~f[pos][sum][c[dig]])
-		return f[pos][sum][c[dig]];
-	int maxi=lim?a[pos]:9;
-	int res=0;
-	for(int i=0;i&lt;=maxi;i++)
-		res+=dfs(pos-1,i==0?dig:dig*i/gcd(dig,i),(sum*10+i)%mod,(init&amp;&amp;!i),lim&amp;&amp;i==maxi);
-	if(!init &amp;&amp; !lim)
-		f[pos][sum][c[dig]]=res;
-	return res;
-}
-
-inline int cal(int x)
-{
-	len=0;
-	while(x)a[++len]=x%10,x/=10;
-	return dfs(len,1,0,1,1);
-}
-
-signed main()
-{
-	int T;
-	memset(f,-1,sizeof(f));
-	scanf(&quot;%lld&quot;,&amp;T);
-	for(int i=1;i&lt;=mod;i++)
-		if(mod%i==0)c[i]=++cnt;
-	while(T--)
-	{
-		scanf(&quot;%lld%lld&quot;,&amp;l,&amp;r);
-		printf(&quot;%lld\n&quot;,cal(r)-cal(l-1));
-	}
-	return 0;
-} 
 </code></pre>
 ]]></content>
     </entry>
