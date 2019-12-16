@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rainyclementine.github.io</id>
     <title>Siilhouette</title>
-    <updated>2019-11-28T11:05:57.584Z</updated>
+    <updated>2019-12-16T06:14:31.566Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rainyclementine.github.io"/>
     <link rel="self" href="https://rainyclementine.github.io/atom.xml"/>
@@ -10,6 +10,320 @@
     <logo>https://rainyclementine.github.io/images/avatar.png</logo>
     <icon>https://rainyclementine.github.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Siilhouette</rights>
+    <entry>
+        <title type="html"><![CDATA[BZOJ3219 巡游 点分治 单调队列 线段树]]></title>
+        <id>https://rainyclementine.github.io/post/bzoj3219-xun-you-dian-fen-zhi-dan-diao-dui-lie-xian-duan-shu</id>
+        <link href="https://rainyclementine.github.io/post/bzoj3219-xun-you-dian-fen-zhi-dan-diao-dui-lie-xian-duan-shu">
+        </link>
+        <updated>2019-12-16T03:48:48.000Z</updated>
+        <content type="html"><![CDATA[<p>给定一棵树 每条边有边权 给出<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mi>l</mi><mi>e</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">minlen</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span></span></span></span> <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>a</mi><mi>x</mi><mi>l</mi><mi>e</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">maxlen</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span></span></span></span><br>
+求出一条长度在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mi>l</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">minle</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span></span></span></span>n$ maxlen$之间的路径 对路径上的边权排序<br>
+使得中位数最大 如果偶数取中间较大的那一个</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>o</mi><mi>l</mi><mn>1</mn><mo>:</mo></mrow><annotation encoding="application/x-tex">sol1:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span></span></span>点分治+线段树<br>
+因为是<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mi>l</mi><mi>o</mi><msup><mi>g</mi><mn>3</mn></msup><mi>n</mi></mrow><annotation encoding="application/x-tex">nlog^{3}n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.008548em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">o</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span><span class="mord mathdefault">n</span></span></span></span> 在一条链的时候T了<br>
+二分中位数 将所有边权<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>&gt;</mo><mo>=</mo><mi>m</mi><mi>i</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">&gt;=mid</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">d</span></span></span></span>的边权置<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 否则<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span><br>
+就是求是否存在一条权值为正的路径<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span>表示之前子树的长度为i路径的最大路径权值<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>g</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">g[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span>表示当前子树的<br>
+那么维护一棵线段树 下标表示距离 维护区间最小值<br>
+每次查询<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>g</mi><mo>[</mo><mi>i</mi><mo>]</mo><mo>+</mo><mi>q</mi><mi>u</mi><mi>e</mi><mi>r</mi><mi>y</mi><mo>(</mo><mi>m</mi><mi>i</mi><mi>n</mi><mi>l</mi><mi>e</mi><mi>n</mi><mo>−</mo><mi>i</mi><mo separator="true">,</mo><mi>m</mi><mi>a</mi><mi>x</mi><mi>l</mi><mi>e</mi><mi>n</mi><mo>−</mo><mi>i</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">g[i]+query(minlen-i,maxlen-i)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mopen">(</span><span class="mord mathdefault">m</span><span class="mord mathdefault">i</span><span class="mord mathdefault">n</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">m</span><span class="mord mathdefault">a</span><span class="mord mathdefault">x</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">i</span><span class="mclose">)</span></span></span></span>是否为正<br>
+然后用<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>g</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">g[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span>更新<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span> 更新成功就更新线段树<br>
+因为多次做点分治 所以可以将分治重心处理出来<br>
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi><mi>e</mi><mi>m</mi><mi>r</mi><mi>o</mi><mi>o</mi><mi>t</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">temroot[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">m</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">o</span><span class="mord mathdefault">o</span><span class="mord mathdefault">t</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span>表示<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathdefault">i</span></span></span></span>点的所有子树的重心</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define getchar() (p1==p2&amp;&amp;(p2=(p1=buf)+fread(buf,1,1&lt;&lt;21,stdin),p1==p2)?EOF:*p1++)
+char buf[1&lt;&lt;23],*p1=buf,*p2=buf,obuf[1&lt;&lt;23],*O=obuf;
+
+const int N=100010;
+const int inf=1000000000;
+int n,minlen,maxlen,tot=1,cnt,root,sum,b,head[N],maxi[N],siz[N],dis[N],dep[N],f[N],g[N];
+vector&lt;int&gt;temroot[N];
+bool v[N];
+struct Edge{
+	int suiv,ver,edge,w;
+}e[N&lt;&lt;1];
+
+struct SegmentTree{
+	int maxi;
+	#define maxi(x) t[x].maxi
+}t[N&lt;&lt;2];
+
+inline int rint()
+{
+	int res=0,fix=1;
+	char ch;
+	while(!isdigit(ch=getchar()))
+		fix=(ch=='-')?-1:fix;
+	do res=res*10+(ch^'0');
+	while(isdigit(ch=getchar()));
+	return fix*res;
+}
+
+inline void lnk(int x,int y,int z)
+{
+	e[++tot].ver=y;
+	e[tot].edge=z;
+	e[tot].suiv=head[x];
+	head[x]=tot;
+}
+
+inline void change(int p,int l,int r,int d,int val)
+{
+	if(l==r)return maxi(p)=val,void();
+	int mid=l+r&gt;&gt;1;
+	if(d&lt;=mid)change(p&lt;&lt;1,l,mid,d,val);
+	if(d&gt;mid)change(p&lt;&lt;1|1,mid+1,r,d,val);
+	maxi(p)=max(maxi(p&lt;&lt;1),maxi(p&lt;&lt;1|1));
+}
+
+inline int query(int p,int l,int r,int L,int R)
+{
+	if(L&lt;=l &amp;&amp; r&lt;=R)return maxi(p);
+	int mid=l+r&gt;&gt;1,res=-inf;
+	if(L&lt;=mid)res=max(res,query(p&lt;&lt;1,l,mid,L,R));
+	if(R&gt;mid)res=max(res,query(p&lt;&lt;1|1,mid+1,r,L,R));
+	return res;
+}
+
+inline void getroot(int x,int fa)
+{
+	siz[x]=1,maxi[x]=0;
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(v[y] || y==fa)continue;
+		getroot(y,x);
+		siz[x]+=siz[y];
+		maxi[x]=max(maxi[x],siz[y]);
+	}
+	maxi[x]=max(maxi[x],sum-siz[x]);
+	if(maxi[x]&lt;maxi[root])root=x;
+}
+
+inline void getdis(int x,int fa,int &amp;posdep)
+{
+	g[dep[x]]=max(g[dep[x]],dis[x]);
+	posdep=max(posdep,dep[x]);
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(v[y] || fa==y)continue;
+		dis[y]=dis[x]+e[i].w,dep[y]=dep[x]+1;
+		getdis(y,x,posdep);
+	}
+}
+
+inline void init(int x)
+{
+	v[x]=1;
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(v[y])continue;
+		sum=siz[y];
+		root=0;
+		getroot(y,x);
+		temroot[x].push_back(root);
+		init(root);
+	}
+}
+
+inline void solve(int x)
+{	
+	if(b)return;
+	v[x]=1;
+	int posdep=0,maxdep=0;
+	f[0]=0;change(1,0,n,0,0);
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(v[y])continue;
+		dis[y]=e[i].w,dep[y]=1,posdep=0;
+		getdis(y,x,posdep);
+		for(int i=1;i&lt;=posdep;i++)if(i&lt;=minlen)
+			if(g[i]+query(1,0,n,minlen-i,maxlen-i)&gt;=0)b=1;
+		for(int i=0;i&lt;=posdep;i++)
+			if(g[i]&gt;f[i])change(1,0,n,i,g[i]),f[i]=g[i];
+		for(int i=0;i&lt;=posdep;i++)
+			g[i]=-inf;
+		maxdep=max(maxdep,posdep);
+		if(b)break;
+	}
+	for(int i=0;i&lt;=maxdep;i++)
+		f[i]=g[i]=-inf,change(1,0,n,i,-inf);
+	if(b)return;
+	for(int i:temroot[x])
+		if(!v[i])solve(i);
+}
+
+inline bool valid(int mid)
+{
+	memset(v,0,sizeof(v));
+	memset(t,0xcfcfcfcf,sizeof(t));
+	for(int i=2;i&lt;=tot;i+=2)
+		e[i^1].w=e[i].w=(e[i].edge&gt;=mid?1:-1);
+	for(int i=0;i&lt;=n;i++)
+		f[i]=g[i]=-inf;
+	b=0;
+	solve(temroot[0][0]);
+	return b;
+}
+
+int main()
+{
+	n=rint(),minlen=rint(),maxlen=rint();
+	int l=inf,r=0,ans=-1;
+	for(int i=1,x,y,z;i&lt;n;i++)
+		x=rint(),y=rint(),z=rint(),
+		lnk(x,y,z),lnk(y,x,z),l=min(l,z),r=max(r,z);
+	sum=maxi[0]=n;
+	root=0;
+	getroot(1,0);
+	temroot[0].push_back(root);
+	init(root);
+	memset(t,0xcfcfcfcf,sizeof(t));
+	while(l&lt;=r)
+	{
+		int mid=l+r&gt;&gt;1;
+		if(valid(mid))ans=mid,l=mid+1;
+		else r=mid-1;
+	}
+	printf(&quot;%d\n&quot;,ans);
+	return 0;
+} 
+</code></pre>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>o</mi><mi>l</mi><mn>2</mn><mo>:</mo></mrow><annotation encoding="application/x-tex">sol2:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span></span></span>点分治+单调队列<br>
+每次枚举<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">f[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span> 单调队列维护<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>g</mi><mo>[</mo><mi>i</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">g[i]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span></span></span></span>中的在区间里的最大值</p>
+<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N=200010;
+const int inf=1000000007;
+const double eps=1e-5;
+int n,m,tot,sum,minlen,maxlen,head[N],root,Root;
+int siz[N],maxi[N],q[N],f[N],g[N];
+bool v[N],b;
+vector&lt;int&gt;t[N];
+struct Edge{
+	int suiv,ver,edge,w;
+}e[N&lt;&lt;1];
+
+inline void lnk(int x,int y,int z)
+{
+	e[++tot].ver=y;
+	e[tot].edge=z;
+	e[tot].suiv=head[x];
+	head[x]=tot;
+}
+
+inline void getroot(int x,int fa)
+{
+	siz[x]=maxi[x]=1;
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(y==fa || v[y])continue;
+		getroot(y,x);
+		maxi[x]=max(maxi[x],siz[y]);
+		siz[x]+=siz[y];
+	}
+	maxi[x]=max(maxi[x],sum-siz[x]);
+	if(maxi[x]&lt;maxi[root])root=x;
+}
+
+inline void getdis(int x,int fa,int dep,int dis,int&amp; maxdep)
+{
+	maxdep=max(maxdep,dep);
+	g[dep]=max(g[dep],dis);
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(v[y] || y==fa)continue;
+		getdis(y,x,dep+1,dis+e[i].w,maxdep);
+	}
+}
+
+inline void build(int x)
+{
+	v[x]=1;
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(v[y])continue;
+		root=0;sum=siz[y];getroot(y,x);
+		t[x].push_back(root);
+		build(root);
+	}
+	v[x]=0;
+}
+
+inline void solve(int x)
+{
+	v[x]=1;int posdep=0,maxdep=0;
+	if(b)return v[x]=0,void();
+	for(int i=head[x];i;i=e[i].suiv)
+	{
+		int y=e[i].ver;
+		if(v[y])continue;
+		posdep=0;
+		getdis(y,x,1,e[i].w,posdep);
+		int l=1,r=0;
+		for(int ld=maxdep,rd=1;rd&lt;=posdep;rd++)
+		{
+			while(l&lt;=r &amp;&amp; q[l]&gt;maxlen-rd)l++;
+			while(ld&gt;=minlen-rd &amp;&amp; ld&gt;=0)
+			{
+				while(l&lt;=r &amp;&amp; f[q[r]]&lt;=f[ld])r--;
+				q[++r]=ld;ld--;
+			}
+			if(l&lt;=r &amp;&amp; f[q[l]]+g[rd]&gt;=0){b=1;break;}
+		}
+		for(int j=1;j&lt;=posdep;j++)f[j]=max(f[j],g[j]);
+		maxdep=max(maxdep,posdep);
+		for(int j=1;j&lt;=posdep;j++)g[j]=-1e9;
+		if(b)break;
+	}
+	for(int i=1;i&lt;=maxdep;i++)f[i]=-1e9;
+	if(b)return v[x]=0,void();
+	for(int i=0,lim=t[x].size();i&lt;lim;i++)
+		{solve(t[x][i]);if(b)break;}
+	v[x]=0;
+}
+
+inline bool valid(int mid)
+{
+	b=0;
+	for(int i=1;i&lt;=tot;i++)
+		e[i].w=e[i].edge&gt;=mid?1:-1;
+	solve(Root);
+	return b;
+}
+
+int main()
+{
+	scanf(&quot;%d%d%d&quot;,&amp;n,&amp;minlen,&amp;maxlen);
+	for(int i=1;i&lt;=n;i++)f[i]=g[i]=-1e9;
+	int l=0x3f3f3f3f,r=0,ans=-1;
+	for(int i=1,x,y,z;i&lt;n;i++)
+		scanf(&quot;%d%d%d&quot;,&amp;x,&amp;y,&amp;z),
+		l=min(l,z),r=max(r,z),lnk(x,y,z),lnk(y,x,z);
+	sum=maxi[0]=n;
+	getroot(1,1);
+	Root=root;
+	build(root);
+	while(l&lt;=r)
+	{
+		int mid=l+r&gt;&gt;1;
+		if(valid(mid))ans=mid,l=mid+1;
+		else r=mid-1;
+	}
+	printf(&quot;%d\n&quot;,ans);
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[第十四分块(前体) 莫队二次离线]]></title>
         <id>https://rainyclementine.github.io/post/di-shi-si-fen-kuai-qian-ti-mo-dui-er-ci-chi-xian</id>
@@ -1440,96 +1754,6 @@ int main()
 	for(int i=l;i&lt;=r;i++)
 		ans=min(ans,cal(i));
 	printf(&quot;%d\n&quot;,ans);
-	return 0;
-}
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[POI2008 PlotPurchase DP 悬线法]]></title>
-        <id>https://rainyclementine.github.io/post/poi2008-plotpurchase-dp-xuan-xian-fa</id>
-        <link href="https://rainyclementine.github.io/post/poi2008-plotpurchase-dp-xuan-xian-fa">
-        </link>
-        <updated>2019-10-08T03:11:16.000Z</updated>
-        <content type="html"><![CDATA[<p>给定数<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span>和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>∗</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n*n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.46528em;vertical-align:0em;"></span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">n</span></span></span></span>的数字矩阵 求一个子矩阵<br>
-权值在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>[</mo><mi>m</mi><mo separator="true">,</mo><mn>2</mn><mi>m</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[m,2m]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathdefault">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mord mathdefault">m</span><span class="mclose">]</span></span></span></span>之间 输出这个矩阵的坐标<br>
-坐标是反着的!</p>
-<p>首先一个点如果权值满足要求 就直接输出好了<br>
-如果一个点的权值<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>&gt;</mo><mn>2</mn><mi>m</mi></mrow><annotation encoding="application/x-tex">&gt;2m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathdefault">m</span></span></span></span>那么它肯定不选<br>
-那么标记这些不能选的点 然后用选线法求出最大子矩阵<br>
-如果这个子矩阵合法 直接输出<br>
-否则枚举这个子矩阵的每一行<br>
-如果枚举当前行<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>&lt;</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">&lt;m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span> 直接删去<br>
-如果枚举当前行合法 直接输出<br>
-如果枚举当前行<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>&gt;</mo><mn>2</mn><mi>m</mi></mrow><annotation encoding="application/x-tex">&gt;2m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathdefault">m</span></span></span></span> <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>b</mi><mi>r</mi><mi>e</mi><mi>a</mi><mi>k</mi></mrow><annotation encoding="application/x-tex">break</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">b</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span></p>
-<p>对这单独的一行 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>t</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">ta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault">a</span></span></span></span>的权值和<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>&gt;</mo><mn>2</mn><mi>m</mi></mrow><annotation encoding="application/x-tex">&gt;2m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathdefault">m</span></span></span></span> 每一个元素<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>&lt;</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">&lt;m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">m</span></span></span></span><br>
-那么以此删除 肯定有一个时刻权值在<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>[</mo><mi>m</mi><mo separator="true">,</mo><mn>2</mn><mi>m</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">[m,2m]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathdefault">m</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mord mathdefault">m</span><span class="mclose">]</span></span></span></span></p>
-<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>l</mi><mi mathvariant="normal">/</mi><mi>r</mi><mo>[</mo><mi>i</mi><mo>]</mo><mo>[</mo><mi>j</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">l/r[i][j]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord">/</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">]</span></span></span></span>表示从<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i,j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span></span></span></span>往 左<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="normal">/</mi></mrow><annotation encoding="application/x-tex">/</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">/</span></span></span></span>右 走最多到哪个格子还是合法的<br>
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mi>e</mi><mi>r</mi><mo>[</mo><mi>i</mi><mo>]</mo><mo>[</mo><mi>j</mi><mo>]</mo></mrow><annotation encoding="application/x-tex">ver[i][j]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">[</span><span class="mord mathdefault">i</span><span class="mclose">]</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span><span class="mclose">]</span></span></span></span>表示从<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mo separator="true">,</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i,j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span></span></span></span>往上走最多到哪个格子还是合法的</p>
-<pre><code class="language-cpp">#include&lt;bits/stdc++.h&gt;
-using namespace std;
-
-const int N=2010;
-typedef long long ll;
-int n,m,l[N][N],r[N][N],ver[N][N];
-ll a[N][N],s[N][N];
-
-signed main()
-{
-	ll ans=-0x3f3f3f3f;
-	int r1,r2,c1,c2,n1,n2,m1,m2;
-	scanf(&quot;%d%d&quot;,&amp;m,&amp;n);
-	for(int i=1;i&lt;=n;i++)
-		for(int j=1;j&lt;=n;j++)
-		{
-			scanf(&quot;%d&quot;,&amp;a[i][j]);ver[i][j]=1; 
-			s[i][j]=s[i-1][j]+s[i][j-1]-s[i-1][j-1]+a[i][j];
-			if(a[i][j]&gt;2ll*m)a[i][j]=-1;
-			if(a[i][j]&gt;=m &amp;&amp; a[i][j]&lt;=2ll*m)
-				{printf(&quot;%d %d %d %d\n&quot;,j,i,j,i);return 0;}	
-		}
-	for(int i=1;i&lt;=n;i++)
-		for(int j=1;j&lt;=n;j++)
-			l[i][j]=(a[i][j]!=-1 &amp;&amp; j&gt;1 &amp;&amp; a[i][j-1]!=-1)? 
-					l[i][j-1] : j;
-	for(int i=1;i&lt;=n;i++)
-		for(int j=n;j;j--)
-			r[i][j]=(a[i][j]!=-1 &amp;&amp; j&lt;n &amp;&amp; a[i][j+1]!=-1)?
-					r[i][j+1] : j;
-	for(int i=1;i&lt;=n;i++)
-		for(int j=1;j&lt;=n;j++)if(~a[i][j])
-		{
-			if(i&gt;1 &amp;&amp; ~a[i-1][j])
-				l[i][j]=max(l[i][j],l[i-1][j]),
-				r[i][j]=min(r[i][j],r[i-1][j]),
-				ver[i][j]=ver[i-1][j]+1;
-			n1=i-ver[i][j]+1,m1=l[i][j],n2=i,m2=r[i][j];
-			ll nou=s[n2][m2]-s[n2][m1-1]-s[n1-1][m2]+s[n1-1][m1-1];
-			if(ans&lt;nou)
-				ans=nou,r1=n1,r2=n2,c1=m1,c2=m2;
-		}
-	if(ans&gt;=m &amp;&amp; ans&lt;=2ll*m)
-		{printf(&quot;%d %d %d %d\n&quot;,c1,r1,c2,r2);return 0;}
-    ll nou;
-	for(int i=r1;i&lt;=r2;i++)
-	{
-		nou=s[i][c2]-s[i-1][c2]-s[i][c1-1]+s[i-1][c1-1];
-		if(nou&gt;=m &amp;&amp; nou&lt;=2ll*m)
-			{printf(&quot;%d %d %d %d\n&quot;,c1,i,c2,i);return 0;}
-		if(nou&gt;2ll*m)
-			{n1=i,n2=i,m1=c1,m2=c2;break;}
-		ans-=nou;
-		if(ans&gt;=m &amp;&amp; ans&lt;=2ll*m &amp;&amp; i&lt;r2)	
-			{printf(&quot;%d %d %d %d\n&quot;,c1,i+1,c2,r2);return 0;}
-	}
-	if(!ans){puts(&quot;NIE&quot;);return 0;}
-	for(int i=m1;i&lt;=m2;i++)
-	{
-		nou-=a[n1][i];
-		if(nou&gt;=m &amp;&amp; nou&lt;=2ll*m)
-			{printf(&quot;%d %d %d %d\n&quot;,i+1,n1,m2,n1);return 0;}
-	}
-	puts(&quot;NIE&quot;);
 	return 0;
 }
 </code></pre>
